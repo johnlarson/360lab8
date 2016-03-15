@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/comments/', function(req, res) {
 	var conn = mng.connection;
-	var db = conn.db('mng');
+	var db = conn.db.db('lab8');
 	db.collection('comments', function(err, comments) {
 		comments.find(function(err, items) {
 			items.toArray(function(err, arr) {
@@ -22,22 +22,38 @@ router.get('/comments/', function(req, res) {
 });
 
 router.post('/comments/', function(req, res) {
-	console.log('in');
 	var conn = mng.connection;
-	console.log('conn:', conn);
-	var db = conn.db('mng');
-	console.log('GOT DB!!!!!!');
-	console.log('db:', db);
-	var name = req.query.name;
-	console.log('name:', name);
-	var comment = req.query.comment;
-	console.log('comment:', comment);
+	var db = conn.db.db('lab8');
+	var args = req.body;
+	var name = args.name;
+	var comment = args.comment;
 	var addable = { name: name, comment: comment };
-	console.log('addable:', addable);
 	db.collection('comments', function(err, comments) {
-		console.log('comments:', comments);
 		comments.insert(addable);
-		console.log('made it through');
+		res.send({ success: true });
+	});
+});
+
+router.get('/obj/', function(req, res) {
+	var conn = mng.connection;
+	var db = conn.db.db('lab8');
+	db.collection('objs', function(err, objs) {
+		objs.find(function(err, items) {
+			items.toArray(function(err, arr) {
+				res.send(arr);
+			});
+		});
+	});
+});
+
+router.post('/obj/', function(req, res) {
+	var conn = mng.connection;
+	var db = conn.db.db('lab8');
+	var obj = req.body;
+	console.log('typeof body:', typeof req.body);
+	db.collection('objs', function(err, objs) {
+		objs.insert(obj);
+		res.send({ success: true });
 	});
 });
 
