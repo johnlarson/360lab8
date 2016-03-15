@@ -50,7 +50,6 @@ router.post('/obj/', function(req, res) {
 	var conn = mng.connection;
 	var db = conn.db.db('lab8');
 	var obj = req.body;
-	console.log('typeof body:', typeof req.body);
 	db.collection('objs', function(err, objs) {
 		objs.insert(obj);
 		res.send({ success: true });
